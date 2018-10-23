@@ -55,7 +55,8 @@ for i in range(1, pagination_num):
                 "abstract": abstract,
                 "body": body,
                 "date_shamsi": date_shamsi,
-                "time": time}
+                "time": time
+                "link": str(link)}
 
         docs.append(doc)
     news.insert_many(docs)
