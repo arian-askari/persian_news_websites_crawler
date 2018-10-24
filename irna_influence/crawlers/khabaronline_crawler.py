@@ -7,7 +7,7 @@ from textblob import TextBlob
 import sys
 
 server_url = "https://www.khabaronline.ir/detail/"
-path_log = "./khabaronline.log"
+path_log = "./log/khabaronline.log"
 
 mongo_server = "localhost"
 mongo_port = 27017
@@ -25,8 +25,9 @@ else:
 docs = []
 for i in range(int(start), int(end)):
     try:
-        print(server_url + str(i))
-        request = requests.get(server_url + str(i))
+        link = server_url + str(i)
+        print(link)
+        request = requests.get(link)
         content = request.text
 
         soup = BeautifulSoup(content, "html.parser")
@@ -48,13 +49,14 @@ for i in range(int(start), int(end)):
             comments_count = 0
 
         doc = {
-            "title": title,
-            "body" : body,
-            "abstract" : abstract,
-            "time" : time,
-            "date" : date,
-            "raters" : raters,
-            "comments_count" : comments_count
+                "title": title,
+                "body" : body,
+                "abstract" : abstract,
+                "time" : time,
+                "date_shamsi" : date,
+                "raters" : raters,
+                "comments_count" : comments_count,
+                "link": link
         }
         docs.append(doc)
         if len(docs)>=10:
