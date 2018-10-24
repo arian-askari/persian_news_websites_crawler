@@ -7,20 +7,20 @@ from textblob import TextBlob
 import sys
 from unidecode import unidecode
 
-server_url = "http://aftabnews.ir/fa/news/"
-path_log = "./log/aftabnews.log"
+server_url = "https://fararu.com/fa/news/"
+path_log = "./log/fararu.log"
 
 mongo_server = "localhost"
 mongo_port = 27017
 client = MongoClient(mongo_server, mongo_port)
 db = client['news_sites']
-news = db['aftabnews']
+news = db['fararu']
 
 if len(sys.argv)>1:
     start = sys.argv[1]
     end = sys.argv[2]
 else:
-    f = open(path_log, "r+") #551349,551798
+    f = open(path_log, "r+") #845147, 845829
     start, end = str(f.read()).split(",")
 
 docs = []
@@ -33,10 +33,12 @@ for i in range(int(start), int(end)):
 
         soup = BeautifulSoup(content, "html.parser")
 
-        title = str(soup.select('h1.title')[0].getText().strip())
+        title = str(soup.select('div.title_rutitr_body')[0].getText().strip())
+        title = re.sub(r"\s+", " ", title, flags=re.UNICODE)
+
         subtitle = None
-        if len(soup.select('div.subtitle'))>0:
-            subtitle = str(soup.select('div.subtitle')[0].getText().strip())
+        if len(soup.select('div.news_body_lead'))>0:
+            subtitle = str(soup.select('div.news_body_lead')[0].getText().strip())
         else:
             subtitle = ""
 
@@ -49,9 +51,14 @@ for i in range(int(start), int(end)):
         else:
             comments_count = 0
 
-        date, time  = soup.select('div.news_pdate_c')[0].getText().strip().replace("تاریخ انتشار:","").split('-')
+        like_count = soup.select("span.like_number")[0].getText().strip()
+        like_count = re.findall(r'\d+', like_count)[0]
+        if len(like_count) == 0:
+            like_count = 0
+
+        time, date = soup.select('div.news_pdate_c')[0].getText().strip().replace("تاریخ انتشار:","").split('-')
+        time = str(unidecode(time))
         date = str(date)
-        time = str(time)
 
         doc = {
                 "title": title,
@@ -60,10 +67,11 @@ for i in range(int(start), int(end)):
                 "time": time,
                 "date_shamsi": date,
                 "comment_count": comments_count,
+                "like_count" : like_count,
                 "link": link
         }
         docs.append(doc)
-        if len(docs)>=20:
+        if len(docs)>=2:
             news.insert_many(docs)
             docs.clear()
 
