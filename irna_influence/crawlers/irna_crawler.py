@@ -8,8 +8,8 @@ server_url = "http://www.irna.ir"
 mongo_server = "localhost"
 mongo_port = 27017
 client = MongoClient(mongo_server, mongo_port)
-db = client['irna']
-news = db['news']
+db = client['news_sites']
+news = db['irna']
 
 def get_news_links(page_number):
     links_list = []
@@ -55,7 +55,7 @@ for i in range(1, pagination_num):
                 "abstract": abstract,
                 "body": body,
                 "date_shamsi": date_shamsi,
-                "time": time
+                "time": time,
                 "link": str(link)}
 
         docs.append(doc)
