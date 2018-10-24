@@ -69,12 +69,12 @@ for i in range(int(start), int(end)):
                 "link": link
         }
         docs.append(doc)
-        if len(docs)>=2:
+        if len(docs)>=20:
             news.insert_many(docs)
             docs.clear()
 
-        f = open(path_log, "w+")
-        f.write(str(i) + "," + str(end))
+            f = open(path_log, "w+")
+            f.write(str(i) + "," + str(end))
 
     except Exception as e:
         print(e)
