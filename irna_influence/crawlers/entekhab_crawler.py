@@ -5,17 +5,17 @@ from bs4 import BeautifulSoup
 from pymongo import MongoClient
 from unidecode import unidecode
 
-server_url = "https://www.parsine.com"
+server_url = "http://www.entekhab.ir"
 
 mongo_server = "localhost"
 mongo_port = 27017
 client = MongoClient(mongo_server, mongo_port)
 db = client['news_sites']
-news = db['parsine']
+news = db['entekhab']
 
 def get_news_links(page_number):
     links_list = []
-    base_url = server_url + "/fa/archive?service_id=0&sec_id=0&cat_id=0&rpp=100&from_date=1397/07/20&to_date=1397/08/05&p=1"
+    base_url = server_url + "/fa/archive?service_id=0&sec_id=0&cat_id=0&rpp=10&from_date=1397/07/20&to_date=1397/08/05&p=1"
     latest_url = base_url + str(page_number)
 
     content = requests.get(latest_url).text
@@ -46,7 +46,7 @@ for i in range(1, pagination_num):
         news_cnt += 1
         content = requests.get(link).text
         soup = BeautifulSoup(content, "html.parser")
-        body_raw_txt  = ''.join([str(i) for i in soup.select("section.body")])
+        body_raw_txt  = ''.join([str(i) for i in soup.select("div.khabar-matn")])
         soup_body = BeautifulSoup(str(re.sub('<br.*?>', '\n', body_raw_txt)),"html.parser")
 
         title = str(soup.h1.getText().strip())
@@ -56,23 +56,12 @@ for i in range(1, pagination_num):
         else:
             subtitle = ""
 
-        body = str(soup_body.getText()).replace("[","").replace("]","")
+        body = str(soup_body.getText())
+        body = str(re.sub('(var.*?error.*}\);)', '', body))
 
-        date, time = soup.select('div.news_pdate_c')[0].getText().strip().replace("تاریخ انتشار:", "").split('-')
+        time, date = soup.select('div.news_pdate_c')[0].getText().strip().replace("تاریخ انتشار:", "").split('-')
         date = str(date)
         time = str(time)
-
-        comments_count = soup.findAll("a", {"href": "#comments"})
-        if len(comments_count) > 0:
-            comments_count = unidecode(comments_count[0].getText().strip())
-            comments_count = re.findall(r'\d+', comments_count)[0]
-        else:
-            comments_count = 0
-
-        like_count = soup.select("span.like_number")[0].getText().strip()
-        like_count = re.findall(r'\d+', like_count)[0]
-        if len(like_count) == 0:
-            like_count = 0
 
         doc = {
             "title": title,
@@ -80,8 +69,6 @@ for i in range(1, pagination_num):
             "body": body,
             "date_shamsi": date,
             "time": time,
-            "comment_count": comments_count,
-            "like_count": like_count,
             "link": str(link)
         }
         docs.append(doc)
