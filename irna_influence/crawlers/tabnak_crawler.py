@@ -53,8 +53,8 @@ for i in range(int(start), int(end)):
             comments_count = 0
 
         date_shamsi, time = soup.select('sapn.fa_date')[0].getText().strip().split('-')
-        date_shamsi = str(date_shamsi)
-        time = str(time)
+        date_shamsi = str(date_shamsi).strip()
+        time = str(time).strip()
         date_georgian = soup.select('span.en_date')[0].getText().strip()
 
         doc = {

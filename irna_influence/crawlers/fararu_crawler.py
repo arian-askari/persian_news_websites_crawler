@@ -57,8 +57,8 @@ for i in range(int(start), int(end)):
             like_count = 0
 
         time, date = soup.select('div.news_pdate_c')[0].getText().strip().replace("تاریخ انتشار:","").split('-')
-        time = str(unidecode(time))
-        date = str(date)
+        time = str(unidecode(time)).strip()
+        date = str(date).strip()
 
         doc = {
                 "title": title,

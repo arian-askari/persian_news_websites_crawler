@@ -48,8 +48,8 @@ for i in range(1, pagination_num):
         title = str(soup.h1.string)
         abstract = str(soup.h3.string)
         body = str(soup_body.p.text)
-        date_shamsi = str(soup.find_all('span', {'id': DATE_ID})[0].text)
-        time = str(soup.find_all('span', {'id': TIME_ID})[0].text)
+        date_shamsi = str(soup.find_all('span', {'id': DATE_ID})[0].text).strip()
+        time = str(soup.find_all('span', {'id': TIME_ID})[0].text).strip()
 
         doc = {"title": title,
                 "abstract": abstract,

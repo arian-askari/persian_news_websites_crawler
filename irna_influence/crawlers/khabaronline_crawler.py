@@ -36,8 +36,8 @@ for i in range(int(start), int(end)):
         body = str(soup.select('div.body')[0].getText().strip())
         abstract = str(soup.select('div.leadCont')[0].getText().strip())
         time, date = soup.select('span.margin-l-md')[0].getText().strip().split('-')
-        time = str(time)
-        date = str(date)
+        time = str(time).strip()
+        date = str(date).strip()
 
         raters  = soup.select('span.voteNewsNum')[0].getText().strip()
         raters = int(re.findall(r'\d+', raters)[0])

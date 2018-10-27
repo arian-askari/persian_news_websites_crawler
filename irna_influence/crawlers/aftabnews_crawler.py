@@ -50,8 +50,8 @@ for i in range(int(start), int(end)):
             comments_count = 0
 
         date, time  = soup.select('div.news_pdate_c')[0].getText().strip().replace("تاریخ انتشار:","").split('-')
-        date = str(date)
-        time = str(time)
+        date = str(date).strip()
+        time = str(time).strip()
 
         doc = {
                 "title": title,
