@@ -39,7 +39,7 @@ news_cnt = 0
 nextpage = ""
 for i in range(1, pagination_num):
     links, nextpage = get_news_links(nextpage)
-    print("nextpage", nextpage)
+    # print("nextpage", nextpage)
     docs = []
     for link in links:
         print(link)
