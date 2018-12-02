@@ -1,21 +1,5 @@
-# In The Name Of Allah
-#
 # Jalali date converter
-# 2014 07 25
-# Ported from PHP (http://jdf.scr.ir/) to Python (2&3) by Mohammad Javad Naderi <mjnaderi@gmail.com>
-#
-# As mentioned in http://jdf.scr.ir/, the original code is free and open source,
-# and you are not allowed to sell it. You can read more in http://jdf.scr.ir/.
-#
-# Original License Notes:
-#
-#    /** Software Hijri_Shamsi , Solar(Jalali) Date and Time
-#    Copyright(C)2011, Reza Gholampanahi , http://jdf.scr.ir
-#    version 2.55 :: 1391/08/24 = 1433/12/18 = 2012/11/15 */
-#
-#    /** Convertor from and to Gregorian and Jalali (Hijri_Shamsi,Solar) Functions
-#    Copyright(C)2011, Reza Gholampanahi [ http://jdf.scr.ir/jdf ] version 2.50 */
-#
+# Author : Mohammad Javad Naderi
 # Example Usage:
 #
 #  >>> import jalali
